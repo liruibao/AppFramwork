@@ -1,8 +1,11 @@
 package com.ssoft.module_main;
 
 import android.app.Application;
+import android.os.StrictMode;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+
+import leakcanary.LeakSentry;
 
 /**
  * Created by liruibao on 2019-05-23.
@@ -19,5 +22,18 @@ public class RealApplication extends Application {
             ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
         }
         ARouter.init(this);
+        enabledStrictMode();
+
     }
+
+    private void  enabledStrictMode() {
+        StrictMode.ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder();
+        StrictMode.setThreadPolicy(
+                builder.detectAll()
+                        .penaltyLog()
+                        .penaltyDeath()
+                        .build()
+        );
+    }
+
 }
